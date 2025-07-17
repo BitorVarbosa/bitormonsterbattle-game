@@ -1,2 +1,2 @@
 # BitorMonsterBattle
-An open source turn based team battler.
+An open source turn based team battle game.
