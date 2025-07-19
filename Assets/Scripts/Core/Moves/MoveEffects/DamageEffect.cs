@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BitorMonsterBattle.Core
 {
-    [CreateAssetMenu(fileName = "Damage Effect", menuName = "Battle System/Effects/Damage Effect")]
+    [CreateAssetMenu(fileName = "Damage Effect", menuName = "BitorMonsterBattle/Effects/Damage Effect")]
     public class DamageEffect : MoveEffect
     {
         [Header("Damage Settings")]

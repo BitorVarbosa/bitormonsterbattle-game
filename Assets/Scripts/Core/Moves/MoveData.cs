@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BitorMonsterBattle.Core
 {
-    [CreateAssetMenu(fileName = "New Move Data", menuName = "Battle System/Move Data")]
+    [CreateAssetMenu(fileName = "New Move Data", menuName = "BitorMonsterBattle/Move Data")]
     public class MoveData : ScriptableObject
     {
         [Header("Basic Info")]

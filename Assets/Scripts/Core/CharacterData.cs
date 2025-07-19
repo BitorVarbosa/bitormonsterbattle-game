@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BitorMonsterBattle.Core
 {
-    [CreateAssetMenu(fileName = "New Character Data", menuName = "Battle System/Character Data")]
+    [CreateAssetMenu(fileName = "New Character Data", menuName = "BitorMonsterBattle/Character Data")]
     public class CharacterData : ScriptableObject
     {
         public const int ENERGY_RECOVERY = 5;
