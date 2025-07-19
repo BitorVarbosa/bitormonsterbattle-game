@@ -7,6 +7,8 @@ namespace BitorMonsterBattle.Core
     [CreateAssetMenu(fileName = "Damage Effect", menuName = "BitorMonsterBattle/Effects/Damage Effect")]
     public class DamageEffect : MoveEffect
     {
+        // TODO: Add support for elemental damage and piercing damage
+
         [Header("Damage Settings")]
         [SerializeField] private int _baseDamage = 20;
         [SerializeField] private bool _useAttackStat = true;
