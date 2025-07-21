@@ -12,9 +12,6 @@ namespace BitorMonsterBattle.Core
         public List<BattleCharacter> PlayerTeam = new List<BattleCharacter>();
         public List<BattleCharacter> EnemyTeam = new List<BattleCharacter>();
 
-        [Header("Battle State")]
-        public BattleState CurrentState { get; private set; }
-
         [Header("Turn Settings")]
         [SerializeField] private int _turnsToCalculate = 15;
         [SerializeField] private float _baseSpeedValue = 10f; // Base speed reference for turn calculation
@@ -22,7 +19,10 @@ namespace BitorMonsterBattle.Core
         // Turn management
         private List<TurnEntry> _calculatedTurns = new List<TurnEntry>();
         private int _currentTurnIndex = 0;
-        private BattleCharacter _currentCharacter;
+        public BattleCharacter CurrentCharacter { get; private set; }
+
+        // Battle State
+        public BattleState CurrentState { get; private set; }
 
         // Events
         public event Action<BattleCharacter> OnCharacterTurnStart;
@@ -123,20 +123,20 @@ namespace BitorMonsterBattle.Core
             }
 
             var currentTurnEntry = _calculatedTurns[_currentTurnIndex];
-            _currentCharacter = currentTurnEntry.Character;
+            CurrentCharacter = currentTurnEntry.Character;
 
             // Check if character is still alive
-            if (!_currentCharacter.IsAlive)
+            if (!CurrentCharacter.IsAlive)
             {
                 _currentTurnIndex++;
                 StartTurn();
                 return;
             }
 
-            _currentCharacter.StartTurn();
-            OnCharacterTurnStart?.Invoke(_currentCharacter);
+            CurrentCharacter.StartTurn();
+            OnCharacterTurnStart?.Invoke(CurrentCharacter);
 
-            if (_currentCharacter.Team == Team.Player)
+            if (CurrentCharacter.Team == Team.Player)
             {
                 CurrentState = BattleState.SelectingActions;
                 // Wait for player input
@@ -151,22 +151,22 @@ namespace BitorMonsterBattle.Core
 
         System.Collections.IEnumerator AIDecision()
         {
-            yield return new WaitForSeconds(1f); // AI thinking time
+            yield return new WaitForSeconds(1f); // Fake AI thinking time
 
             // Simple AI: Use first available move on random valid target
-            var availableMoves = _currentCharacter.CharacterData.AvailableMoves
-                .Where(m => _currentCharacter.CanUseMove(m))
+            var availableMoves = CurrentCharacter.CharacterData.AvailableMoves
+                .Where(m => CurrentCharacter.CanUseMove(m))
                 .ToList();
 
             if (availableMoves.Count > 0)
             {
                 var selectedMove = availableMoves[UnityEngine.Random.Range(0, availableMoves.Count)];
-                var targets = GetValidTargets(_currentCharacter, selectedMove.TargetType);
+                var targets = GetValidTargets(CurrentCharacter, selectedMove.TargetType);
 
                 if (targets.Count > 0)
                 {
                     var selectedTargets = new List<BattleCharacter> { targets[UnityEngine.Random.Range(0, targets.Count)] };
-                    var action = new BattleAction(_currentCharacter, selectedMove, selectedTargets);
+                    var action = new BattleAction(CurrentCharacter, selectedMove, selectedTargets);
                     StartCoroutine(ExecuteActionRoutine(action));
                 }
                 else
@@ -184,7 +184,7 @@ namespace BitorMonsterBattle.Core
 
         public void ExecutePlayerAction(BattleAction action)
         {
-            if (_currentCharacter.Team == Team.Player && CurrentState == BattleState.SelectingActions)
+            if (CurrentCharacter.Team == Team.Player && CurrentState == BattleState.SelectingActions)
             {
                 StartCoroutine(ExecuteActionRoutine(action));
             }
@@ -213,7 +213,7 @@ namespace BitorMonsterBattle.Core
 
         public void EndCharacterTurn()
         {
-            _currentCharacter.EndTurn();
+            CurrentCharacter.EndTurn();
             _currentTurnIndex++;
 
             // Recalculate turn order after each turn to account for speed changes
@@ -261,7 +261,7 @@ namespace BitorMonsterBattle.Core
             _calculatedTurns.RemoveAll(turn => turn.Character == character);
 
             // If it was the current character's turn, move to next
-            if (_currentCharacter == character)
+            if (CurrentCharacter == character)
             {
                 EndCharacterTurn();
             }
@@ -297,7 +297,7 @@ namespace BitorMonsterBattle.Core
             }
         }
 
-        List<BattleCharacter> GetAllCharacters()
+        public List<BattleCharacter> GetAllCharacters()
         {
             var allCharacters = new List<BattleCharacter>();
             allCharacters.AddRange(PlayerTeam);
@@ -305,12 +305,12 @@ namespace BitorMonsterBattle.Core
             return allCharacters;
         }
 
-        List<BattleCharacter> GetTeamMembers(Team team)
+        public List<BattleCharacter> GetTeamMembers(Team team)
         {
             return team == Team.Player ? PlayerTeam : EnemyTeam;
         }
 
-        List<BattleCharacter> GetEnemyTeamMembers(Team team)
+        public List<BattleCharacter> GetEnemyTeamMembers(Team team)
         {
             return team == Team.Player ? EnemyTeam : PlayerTeam;
         }

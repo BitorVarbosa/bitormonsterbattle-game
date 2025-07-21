@@ -24,6 +24,7 @@ namespace BitorMonsterBattle.Core
         // Ongoing StatusEffects
         private List<StatusEffect> ActiveStatusEffects = new List<StatusEffect>();
 
+        public Action<BattleCharacter> OnInitialized;
         public Action<BattleCharacter> OnCharacterDeath;
         public Action<BattleCharacter, int> OnDamageTaken;
         public Action<BattleCharacter, int> OnHealed;
@@ -47,6 +48,7 @@ namespace BitorMonsterBattle.Core
             CurrentEnergy = MaxEnergy;
             CurrentSpeed = CharacterData.BaseSpeed;
             CurrentAttack = CharacterData.BaseAttack;
+            OnInitialized?.Invoke(this);
         }
 
         public void TakeDamage(int damage, BattleCharacter attacker)

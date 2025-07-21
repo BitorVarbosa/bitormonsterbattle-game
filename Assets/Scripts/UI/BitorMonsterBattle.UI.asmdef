@@ -1,0 +1,18 @@
+{
+    "name": "BitorMonsterBattle.UI",
+    "rootNamespace": "BitorMonsterBattle.UI",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:8f4af51b216936144a0cb6fbc07e8a28",
+        "GUID:343322de443ecc34bba5fa1959c8fc1d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
