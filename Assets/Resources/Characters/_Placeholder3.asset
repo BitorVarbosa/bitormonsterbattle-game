@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f6aee60b0632c44bb93684ea95edb7e, type: 3}
+  m_Name: _Placeholder3
+  m_EditorClassIdentifier: 
+  _characterName: Placeholder C
+  _characterSprite: {fileID: 611687573, guid: 9e0020d1963dc1d45b9033cff8583811, type: 3}
+  _baseLife: 90
+  _baseEnergy: 50
+  _baseSpeed: 14
+  _baseAttack: 8
+  AvailableMoves:
+  - {fileID: 11400000, guid: b7e2a03137b745f49ba4636df69ad25d, type: 2}
+  - {fileID: 11400000, guid: b7e2a03137b745f49ba4636df69ad25d, type: 2}
