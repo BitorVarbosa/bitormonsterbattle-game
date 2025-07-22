@@ -16,13 +16,15 @@ namespace BitorMonsterBattle.Core
         [SerializeField] private TargetType _targetType = TargetType.SingleEnemy;
 
         [Header("Effects")]
-        public List<MoveEffect> Effects = new List<MoveEffect>();
+        [SerializeField] private List<MoveEffect> _effects = new List<MoveEffect>();
 
         // Public references from inspector variables
         public string MoveName => _moveName;
         public string Description => _description;
         public Sprite MoveIcon => _moveIcon;
         public int EnergyCost => _energyCost;
+
         public TargetType TargetType => _targetType;
+        public IReadOnlyList<MoveEffect> GetMoveEffects() => _effects.AsReadOnly();
     }
 }

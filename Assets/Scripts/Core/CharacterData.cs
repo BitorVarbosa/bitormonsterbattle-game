@@ -19,7 +19,7 @@ namespace BitorMonsterBattle.Core
         [SerializeField] private int _baseAttack = 15;
 
         [Header("Moves")]
-        public List<MoveData> AvailableMoves = new List<MoveData>();
+        [SerializeField] private List<MoveData> _availableMoves = new List<MoveData>();
 
         // Public references from inspector variables
         public string CharacterName => _characterName;
@@ -28,5 +28,7 @@ namespace BitorMonsterBattle.Core
         public int BaseEnergy => _baseEnergy;
         public int BaseSpeed => _baseSpeed;
         public int BaseAttack => _baseAttack;
+
+        public IReadOnlyList<MoveData> GetAvailableMoves() => _availableMoves.AsReadOnly();
     }
 }

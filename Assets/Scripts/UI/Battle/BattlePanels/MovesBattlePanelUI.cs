@@ -40,13 +40,15 @@ namespace BitorMonsterBattle.UI
             // If the current character is a player, instance buttons for each move
             if (_controller.CurrentCharacter.Team == Team.Player)
             {
-                for (int i = 0; i < character.AvailableMoves.Count; i++)
+                IReadOnlyList<MoveData> availableMoves = character.GetAvailableMoves();
+
+                for (int i = 0; i < availableMoves.Count; i++)
                 {
                     MoveButtonUI button = GetAvailableMoveButton();
                     button.gameObject.SetActive(true);
                     _displayedMoves.Enqueue(button);
 
-                    MoveData move = character.AvailableMoves[i];
+                    MoveData move = availableMoves[i];
                     button.Setup(move.MoveName, move.MoveIcon, move);
                     button.OnClick += HandleMoveClicked;
                     button.OnHover += HandleMoveButtonHover;

@@ -22,7 +22,7 @@ namespace BitorMonsterBattle.Core
         public int MaxEnergy { get; private set; }
 
         // Ongoing StatusEffects
-        private List<StatusEffect> ActiveStatusEffects = new List<StatusEffect>();
+        private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
 
         public Action<BattleCharacter> OnInitialized;
         public Action<BattleCharacter> OnCharacterDeath;
@@ -95,29 +95,29 @@ namespace BitorMonsterBattle.Core
         public void ApplyStatusEffect(StatusEffect effect)
         {
             // Check if effect already exists and handle stacking
-            var existingEffect = ActiveStatusEffects.Find(e => e.GetType() == effect.GetType());
+            var existingEffect = _activeStatusEffects.Find(e => e.GetType() == effect.GetType());
             if (existingEffect != null)
             {
                 existingEffect.Refresh(effect);
             }
             else
             {
-                ActiveStatusEffects.Add(effect);
+                _activeStatusEffects.Add(effect);
                 effect.OnApplied(this);
             }
         }
 
         public void ProcessStatusEffects()
         {
-            for (int i = ActiveStatusEffects.Count - 1; i >= 0; i--)
+            for (int i = _activeStatusEffects.Count - 1; i >= 0; i--)
             {
-                var effect = ActiveStatusEffects[i];
+                var effect = _activeStatusEffects[i];
                 effect.Process(this);
 
                 if (effect.IsExpired())
                 {
                     effect.OnRemoved(this);
-                    ActiveStatusEffects.RemoveAt(i);
+                    _activeStatusEffects.RemoveAt(i);
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace BitorMonsterBattle.Core
             CurrentAttack = CharacterData.BaseAttack;
 
             // Apply status effect modifiers
-            foreach (var effect in ActiveStatusEffects)
+            foreach (var effect in _activeStatusEffects)
             {
                 effect.ModifyStats(this);
             }
@@ -139,7 +139,7 @@ namespace BitorMonsterBattle.Core
         {
             OnCharacterDeath?.Invoke(this);
             // Clear all status effects
-            ActiveStatusEffects.Clear();
+            _activeStatusEffects.Clear();
         }
 
         public void StartTurn()

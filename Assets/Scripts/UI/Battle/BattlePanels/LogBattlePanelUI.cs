@@ -47,16 +47,20 @@ namespace BitorMonsterBattle.UI
 
         private void PopulateLogText()
         {
+            // Each line of the log text should look like: CreatureA used MoveName on EnemyName, EnemyName, EnemyName
             _logText.text = "";
 
             for (int i = 0; i < _loggedActions.Count; i++)
             {
-                BattleAction action = _loggedActions[i];
+                // We will need a list of all target names separated by commas
                 string targets = "";
-                for (int target = 0; target < action.Targets.Count; target++)
+                BattleAction action = _loggedActions[i];
+                IReadOnlyList<BattleCharacter> targetList = action.GetTargets();
+
+                for (int target = 0; target < targetList.Count; target++)
                 {
-                    targets += action.Targets[target].CharacterData.CharacterName;
-                    if (target + 1 < action.Targets.Count)
+                    targets += targetList[target].CharacterData.CharacterName;
+                    if (target + 1 < targetList.Count)
                         targets += ",";
                 }
 

@@ -6,15 +6,17 @@ namespace BitorMonsterBattle.Core
 {
     public class BattleAction
     {
+        private List<BattleCharacter> _targets;
+
         public BattleCharacter Actor { get; private set; }
         public MoveData Move { get; private set; }
-        public List<BattleCharacter> Targets;
+        public IReadOnlyList<BattleCharacter> GetTargets() => _targets.AsReadOnly();
 
         public BattleAction(BattleCharacter actor, MoveData move, List<BattleCharacter> targets)
         {
             this.Actor = actor;
             this.Move = move;
-            this.Targets = targets;
+            this._targets = targets;
         }
 
         public bool CanExecute()
@@ -22,7 +24,7 @@ namespace BitorMonsterBattle.Core
             if (!Actor.IsAlive || !Actor.CanUseMove(Move))
                 return false;
 
-            return Move.Effects.All(effect => effect.CanExecute(Actor, Targets));
+            return Move.GetMoveEffects().All(effect => effect.CanExecute(Actor, _targets));
         }
 
         public void Execute(BattleController battleController)
@@ -31,9 +33,9 @@ namespace BitorMonsterBattle.Core
 
             Actor.ConsumeEnergy(Move.EnergyCost);
 
-            foreach (var effect in Move.Effects)
+            foreach (var effect in Move.GetMoveEffects())
             {
-                effect.Execute(Actor, Targets, battleController);
+                effect.Execute(Actor, _targets, battleController);
             }
         }
     }

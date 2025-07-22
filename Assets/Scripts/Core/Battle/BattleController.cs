@@ -9,8 +9,8 @@ namespace BitorMonsterBattle.Core
     public class BattleController : MonoBehaviour
     {
         [Header("Battle Setup")]
-        public List<BattleCharacter> PlayerTeam = new List<BattleCharacter>();
-        public List<BattleCharacter> EnemyTeam = new List<BattleCharacter>();
+        [SerializeField] private List<BattleCharacter> PlayerTeam = new List<BattleCharacter>();
+        [SerializeField] private List<BattleCharacter> EnemyTeam = new List<BattleCharacter>();
 
         [Header("Turn Settings")]
         [SerializeField] private int _turnsToCalculate = 15;
@@ -154,7 +154,7 @@ namespace BitorMonsterBattle.Core
             yield return new WaitForSeconds(1f); // Fake AI thinking time
 
             // Simple AI: Use first available move on random valid target
-            var availableMoves = CurrentCharacter.CharacterData.AvailableMoves
+            var availableMoves = CurrentCharacter.CharacterData.GetAvailableMoves()
                 .Where(m => CurrentCharacter.CanUseMove(m))
                 .ToList();
 
