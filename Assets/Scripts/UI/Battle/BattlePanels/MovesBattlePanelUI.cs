@@ -20,7 +20,7 @@ namespace BitorMonsterBattle.UI
         private MoveData _selectedMove;
         private Queue<MoveButtonUI> _displayedMoves = new Queue<MoveButtonUI>();
 
-        public override void OpenPanel()
+        protected override void OnPanelOpen()
         {
             ClearMoveButtonList();
 
@@ -113,7 +113,7 @@ namespace BitorMonsterBattle.UI
             }
         }
 
-        public override void ClosePanel()
+        protected override void OnPanelHide()
         {
             _rightDescription.gameObject.SetActive(false);
             _leftDescription.gameObject.SetActive(false);

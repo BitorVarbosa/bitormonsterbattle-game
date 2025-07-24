@@ -36,7 +36,7 @@ namespace BitorMonsterBattle.UI
             }
         }
 
-        public override void OpenPanel()
+        protected override void OnPanelOpen()
         {
             _logText.gameObject.SetActive(true);
             _rightDescription.gameObject.SetActive(true);
@@ -68,7 +68,7 @@ namespace BitorMonsterBattle.UI
             }
         }
 
-        public override void ClosePanel()
+        protected override void OnPanelHide()
         {
             _logText.gameObject.SetActive(false);
             _rightDescription.gameObject.SetActive(false);

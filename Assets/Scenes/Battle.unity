@@ -2036,7 +2036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3376727019526805324, guid: 58fa266c848aab74f97124bf2c3775f7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: BitorMonsterBattle.UI.MovesBattlePanelUI, BitorMonsterBattle.UI
+      value: BitorMonsterBattle.UI.BattlePanelUI, BitorMonsterBattle.UI
       objectReference: {fileID: 0}
     - target: {fileID: 3376727019526805324, guid: 58fa266c848aab74f97124bf2c3775f7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

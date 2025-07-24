@@ -23,7 +23,7 @@ namespace BitorMonsterBattle.UI
         private void HandleActionExecuted(BattleAction action)
         {
             // Always show the log screen so we can follow what is happening
-            SwitchBattlePanel(_logPanel);
+            _logPanel.OpenPanel();
         }
 
         private void HandleCharacterTurnStart(BattleCharacter character)
@@ -31,22 +31,14 @@ namespace BitorMonsterBattle.UI
             // If it's a player's turn, show the Moves available
             if (character.Team == Team.Player)
             {
-                SwitchBattlePanel(_movesPanel);
+                _movesPanel.OpenPanel();
             }
 
             // If it's the enemy's turn, change to log panel
             else
             {
-                SwitchBattlePanel(_logPanel);
+                _logPanel.OpenPanel();
             }
-        }
-
-        private void SwitchBattlePanel(BattlePanelUI panel)
-        {
-            if (_currentBattlePanel) _currentBattlePanel.ClosePanel();
-
-            _currentBattlePanel = panel;
-            panel.OpenPanel();
         }
     }
 }
