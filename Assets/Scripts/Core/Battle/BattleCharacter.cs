@@ -33,12 +33,7 @@ namespace BitorMonsterBattle.Core
         public Team Team => _team;
         public bool IsAlive => CurrentLife > 0;
 
-        void Start()
-        {
-            InitializeStats();
-        }
-
-        void InitializeStats()
+        public void InitializeStats()
         {
             if (CharacterData == null) return;
 

@@ -42,6 +42,7 @@ namespace BitorMonsterBattle.Core
             // Subscribe to character death events
             foreach (var character in GetAllCharacters())
             {
+                character.InitializeStats();
                 character.OnCharacterDeath += OnCharacterDeath;
             }
 
