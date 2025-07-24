@@ -19,12 +19,7 @@ namespace BitorMonsterBattle.UI
 
         private List<BattleAction> _loggedActions = new List<BattleAction>();
 
-        void Awake()
-        {
-            _controller.OnActionExecuted += HandleActionExecuted;
-        }
-
-        private void HandleActionExecuted(BattleAction action)
+        public void RegisterBattleAction(BattleAction action)
         {
             _loggedActions.Add(action);
 
