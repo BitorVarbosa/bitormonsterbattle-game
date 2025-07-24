@@ -162,6 +162,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7588084d3af1aaa42b66b66151ff1033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _positiveButtonColor: {r: 0.7490196, g: 1, b: 0.7137255, a: 0.5058824}
+  _negativeButtonColor: {r: 1, g: 0.73331875, b: 0.7137255, a: 0.5058824}
+  _buttonImage: {fileID: 2589428955330500517}
+  _button: {fileID: 8492822122223677949}
 --- !u!1 &2959921335344271997
 GameObject:
   m_ObjectHideFlags: 0

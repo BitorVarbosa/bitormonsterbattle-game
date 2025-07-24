@@ -21,6 +21,7 @@ namespace BitorTools
 
         protected virtual void Start()
         {
+            _button = GetComponent<Button>();
             _button.onClick.AddListener(HandleClick);
         }
 
