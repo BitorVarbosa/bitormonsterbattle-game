@@ -28,6 +28,8 @@ namespace BitorMonsterBattle.Core
         public Action<BattleCharacter> OnCharacterDeath;
         public Action<BattleCharacter, int> OnDamageTaken;
         public Action<BattleCharacter, int> OnHealed;
+        public Action<BattleCharacter, int> OnEnergyConsumed;
+        public Action<BattleCharacter, int> OnEnergyRestored;
 
         public CharacterData CharacterData => _characterData;
         public Team Team => _team;
@@ -75,11 +77,13 @@ namespace BitorMonsterBattle.Core
         public void ConsumeEnergy(int amount)
         {
             CurrentEnergy = Mathf.Max(0, CurrentEnergy - amount);
+            OnEnergyConsumed?.Invoke(this, amount);
         }
 
         public void RestoreEnergy(int amount)
         {
             CurrentEnergy = Mathf.Min(MaxEnergy, CurrentEnergy + amount);
+            OnEnergyRestored?.Invoke(this, amount);
         }
 
         public bool CanUseMove(MoveData move)

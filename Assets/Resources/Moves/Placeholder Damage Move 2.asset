@@ -15,7 +15,7 @@ MonoBehaviour:
   _moveName: Punch
   _description: This is a move description.
   _moveIcon: {fileID: -3681885316371404793, guid: 9e0020d1963dc1d45b9033cff8583811, type: 3}
-  _energyCost: 10
+  _energyCost: 8
   _targetType: 3
   _effects:
   - {fileID: 11400000, guid: 3139ac9b2b9edcd4db8b7e1fc014445d, type: 2}

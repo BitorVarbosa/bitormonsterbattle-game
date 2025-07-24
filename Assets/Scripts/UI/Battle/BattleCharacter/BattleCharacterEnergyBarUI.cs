@@ -12,7 +12,12 @@ namespace BitorMonsterBattle.UI
         void Awake()
         {
             _character.OnInitialized += HandleInitialized;
-            // TODO: Subscribe to energy spend moments
+            _character.OnEnergyConsumed += HandleEnergyChanged;
+        }
+
+        private void HandleEnergyChanged(BattleCharacter character, int arg2)
+        {
+            UpdateBar();
         }
 
         private void HandleInitialized(BattleCharacter character)
