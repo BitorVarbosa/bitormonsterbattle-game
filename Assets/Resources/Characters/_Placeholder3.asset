@@ -18,6 +18,6 @@ MonoBehaviour:
   _baseEnergy: 50
   _baseSpeed: 14
   _baseAttack: 8
-  AvailableMoves:
+  _availableMoves:
   - {fileID: 11400000, guid: b7e2a03137b745f49ba4636df69ad25d, type: 2}
-  - {fileID: 11400000, guid: b7e2a03137b745f49ba4636df69ad25d, type: 2}
+  - {fileID: 11400000, guid: 146f31689ee777a4ba0d7e25f723a1fc, type: 2}
