@@ -12,13 +12,8 @@ namespace BitorMonsterBattle.Core
         [SerializeField] private List<BattleCharacter> PlayerTeam = new List<BattleCharacter>();
         [SerializeField] private List<BattleCharacter> EnemyTeam = new List<BattleCharacter>();
 
-        [Header("Turn Settings")]
-        [SerializeField] private int _turnsToCalculate = 15;
-        [SerializeField] private float _baseSpeedValue = 10f; // Base speed reference for turn calculation
-
         // Turn management
-        private List<TurnEntry> _calculatedTurns = new List<TurnEntry>();
-        private int _currentTurnIndex = 0;
+        private BattleTurnCalculator _turnCalculator;
         public BattleCharacter CurrentCharacter { get; private set; }
 
         // Battle State
@@ -28,7 +23,6 @@ namespace BitorMonsterBattle.Core
         public event Action<BattleCharacter> OnCharacterTurnStart;
         public event Action<BattleAction> OnActionExecuted;
         public event Action<Team> OnBattleEnd;
-        public event Action<List<TurnEntry>> OnTurnOrderUpdated; // For UI to show turn order
 
         void Start()
         {
@@ -46,90 +40,38 @@ namespace BitorMonsterBattle.Core
                 character.OnCharacterDeath += OnCharacterDeath;
             }
 
+            _turnCalculator = new BattleTurnCalculator(GetAllCharacters());
+
             StartBattle();
         }
 
         void StartBattle()
         {
             CurrentState = BattleState.TurnStart;
-            CalculateTurnOrder();
+            StartCoroutine(StartNextTurn());
+        }
+
+        System.Collections.IEnumerator StartNextTurn()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            BattleCharacter nextCharacter;
+            WaitForSeconds timerInterval = new WaitForSeconds(0.01f);
+            while (!_turnCalculator.IsCharacterReady(out nextCharacter))
+            {
+                _turnCalculator.ProgressTimers(0.1f);
+                yield return timerInterval;
+            }
+
+            CurrentCharacter = nextCharacter;
             StartTurn();
-        }
-
-        void CalculateTurnOrder()
-        {
-            _calculatedTurns.Clear();
-
-            var aliveCharacters = GetAllCharacters().Where(c => c.IsAlive).ToList();
-            if (aliveCharacters.Count == 0) return;
-
-            // Calculate when each character gets their next turns
-            var characterNextTurnTime = new Dictionary<BattleCharacter, float>();
-            var characterTurnCount = new Dictionary<BattleCharacter, int>();
-
-            // Initialize each character's next turn time and turn count
-            foreach (var character in aliveCharacters)
-            {
-                characterNextTurnTime[character] = GetTurnInterval(character);
-                characterTurnCount[character] = 1;
-            }
-
-            // Calculate the next 'turnsToCalculate' turns
-            for (int i = 0; i < _turnsToCalculate; i++)
-            {
-                // Find the character with the earliest next turn
-                var nextCharacter = characterNextTurnTime
-                    .Where(kvp => kvp.Key.IsAlive)
-                    .OrderBy(kvp => kvp.Value)
-                    .ThenBy(kvp => UnityEngine.Random.Range(0f, 1f)) // Random tiebreaker
-                    .FirstOrDefault();
-
-                if (nextCharacter.Key == null) break;
-
-                // Add this turn to the calculated turns
-                _calculatedTurns.Add(new TurnEntry(
-                    nextCharacter.Key,
-                    nextCharacter.Value,
-                    characterTurnCount[nextCharacter.Key]
-                ));
-
-                // Update the character's next turn time
-                characterTurnCount[nextCharacter.Key]++;
-                characterNextTurnTime[nextCharacter.Key] += GetTurnInterval(nextCharacter.Key);
-            }
-
-            OnTurnOrderUpdated?.Invoke(_calculatedTurns);
-        }
-
-        float GetTurnInterval(BattleCharacter character)
-        {
-            // Characters with higher speed get turns more frequently
-            // A character with double speed gets turns at half the interval
-            return _baseSpeedValue / Mathf.Max(1f, character.CurrentSpeed);
         }
 
         void StartTurn()
         {
-            if (_currentTurnIndex >= _calculatedTurns.Count)
-            {
-                // Recalculate turn order if we've run out of calculated turns
-                CalculateTurnOrder();
-                _currentTurnIndex = 0;
-            }
-
-            if (_calculatedTurns.Count == 0)
-            {
-                EndBattle();
-                return;
-            }
-
-            var currentTurnEntry = _calculatedTurns[_currentTurnIndex];
-            CurrentCharacter = currentTurnEntry.Character;
-
             // Check if character is still alive
             if (!CurrentCharacter.IsAlive)
             {
-                _currentTurnIndex++;
                 StartTurn();
                 return;
             }
@@ -179,11 +121,6 @@ namespace BitorMonsterBattle.Core
         public void EndCharacterTurn()
         {
             CurrentCharacter.EndTurn();
-            _currentTurnIndex++;
-
-            // Recalculate turn order after each turn to account for speed changes
-            CalculateTurnOrder();
-            _currentTurnIndex = 0; // Reset to start of new calculation
 
             if (CheckBattleEnd())
             {
@@ -194,12 +131,6 @@ namespace BitorMonsterBattle.Core
                 CurrentState = BattleState.TurnEnd;
                 StartCoroutine(StartNextTurn());
             }
-        }
-
-        System.Collections.IEnumerator StartNextTurn()
-        {
-            yield return new WaitForSeconds(0.5f);
-            StartTurn();
         }
 
         bool CheckBattleEnd()
@@ -222,9 +153,6 @@ namespace BitorMonsterBattle.Core
 
         void OnCharacterDeath(BattleCharacter character)
         {
-            // Remove all future turns for this character
-            _calculatedTurns.RemoveAll(turn => turn.Character == character);
-
             // If it was the current character's turn, move to next
             if (CurrentCharacter == character)
             {

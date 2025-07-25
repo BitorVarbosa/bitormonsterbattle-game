@@ -36,7 +36,7 @@ namespace BitorMonsterBattle.UI
             _logText.gameObject.SetActive(true);
             _rightDescription.gameObject.SetActive(true);
 
-            _rightDescription.text = "Showing log";
+            _rightDescription.text = "";
             PopulateLogText();
         }
 

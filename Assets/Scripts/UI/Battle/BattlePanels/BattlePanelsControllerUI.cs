@@ -20,6 +20,11 @@ namespace BitorMonsterBattle.UI
             _controller.OnActionExecuted += HandleActionExecuted;
         }
 
+        void Start()
+        {
+            _logPanel.OpenPanel();
+        }
+
         private void HandleActionExecuted(BattleAction action)
         {
             // Always show the log screen so we can follow what is happening
