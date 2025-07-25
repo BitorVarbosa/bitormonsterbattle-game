@@ -134,59 +134,23 @@ namespace BitorMonsterBattle.Core
                 return;
             }
 
+            CurrentState = BattleState.SelectingActions;
+
             CurrentCharacter.StartTurn();
             OnCharacterTurnStart?.Invoke(CurrentCharacter);
 
-            if (CurrentCharacter.Team == Team.Player)
-            {
-                CurrentState = BattleState.SelectingActions;
-                // Wait for player input
-            }
-            else
-            {
-                CurrentState = BattleState.SelectingActions;
-                // AI makes decision
-                StartCoroutine(AIDecision());
-            }
+            // Wait for action to be executed by the player or enemy controller
         }
 
-        System.Collections.IEnumerator AIDecision()
+        public void ExecuteBattleAction(BattleAction action)
         {
-            yield return new WaitForSeconds(1f); // Fake AI thinking time
-
-            // Simple AI: Use first available move on random valid target
-            var availableMoves = CurrentCharacter.CharacterData.GetAvailableMoves()
-                .Where(m => CurrentCharacter.CanUseMove(m))
-                .ToList();
-
-            if (availableMoves.Count > 0)
+            if (CurrentState == BattleState.SelectingActions)
             {
-                var selectedMove = availableMoves[UnityEngine.Random.Range(0, availableMoves.Count)];
-                var targets = GetValidTargets(CurrentCharacter, selectedMove.TargetType);
-
-                if (targets.Count > 0)
+                if (action == null)
                 {
-                    var selectedTargets = new List<BattleCharacter> { targets[UnityEngine.Random.Range(0, targets.Count)] };
-                    var action = new BattleAction(CurrentCharacter, selectedMove, selectedTargets);
-                    StartCoroutine(ExecuteActionRoutine(action));
-                }
-                else
-                {
-                    // No valid targets, end turn
                     EndCharacterTurn();
+                    return;
                 }
-            }
-            else
-            {
-                // No available moves, end turn
-                EndCharacterTurn();
-            }
-        }
-
-        public void ExecutePlayerAction(BattleAction action)
-        {
-            if (CurrentCharacter.Team == Team.Player && CurrentState == BattleState.SelectingActions)
-            {
                 StartCoroutine(ExecuteActionRoutine(action));
             }
         }

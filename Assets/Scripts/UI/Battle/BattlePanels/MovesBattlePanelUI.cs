@@ -84,13 +84,13 @@ namespace BitorMonsterBattle.UI
             // Otherwise, we can just execute the action with the valid targets
             else
             {
-                _controller.ExecutePlayerAction(new BattleAction(_controller.CurrentCharacter, _selectedMove, targets));
+                _controller.ExecuteBattleAction(new BattleAction(_controller.CurrentCharacter, _selectedMove, targets));
             }
         }
 
         private void HandleSingleTargetSelected(BattleCharacter target)
         {
-            _controller.ExecutePlayerAction(new BattleAction(_controller.CurrentCharacter, _selectedMove, new List<BattleCharacter>() { target }));
+            _controller.ExecuteBattleAction(new BattleAction(_controller.CurrentCharacter, _selectedMove, new List<BattleCharacter>() { target }));
 
             foreach (var character in _controller.GetAllCharacters())
             {
