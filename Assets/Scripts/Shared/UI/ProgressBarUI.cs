@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
-namespace BitorTools
+namespace BitorTools.UI
 {
     public abstract class ProgressBarUI : MonoBehaviour
     {

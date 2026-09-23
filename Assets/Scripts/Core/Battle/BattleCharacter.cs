@@ -143,7 +143,6 @@ namespace BitorMonsterBattle.Core
 
         public void StartTurn()
         {
-            ProcessStatusEffects();
             RecalculateStats();
             RestoreEnergy(CharacterData.ENERGY_RECOVERY); // Restore some energy each turn
         }
@@ -151,6 +150,7 @@ namespace BitorMonsterBattle.Core
         public void EndTurn()
         {
             // Any end of turn processing
+            ProcessStatusEffects();
         }
     }
 }

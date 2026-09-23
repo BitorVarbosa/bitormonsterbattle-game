@@ -8,12 +8,6 @@ namespace BitorMonsterBattle.UI
     {
         [SerializeField] private BattleController _controller;
 
-        [Header("Panels")]
-        [SerializeField] private MovesBattlePanelUI _movesPanel;
-        [SerializeField] private LogBattlePanelUI _logPanel;
-
-        private BattlePanelUI _currentBattlePanel;
-
         void Awake()
         {
             _controller.OnCharacterTurnStart += HandleCharacterTurnStart;
@@ -22,14 +16,12 @@ namespace BitorMonsterBattle.UI
 
         void Start()
         {
-            _logPanel.OpenPanel();
+            
         }
 
         private void HandleActionExecuted(BattleAction action)
         {
-            // Always show the log screen so we can follow what is happening
-            _logPanel.RegisterBattleAction(action);
-            _logPanel.OpenPanel();
+            
         }
 
         private void HandleCharacterTurnStart(BattleCharacter character)
@@ -37,13 +29,13 @@ namespace BitorMonsterBattle.UI
             // If it's a player's turn, show the Moves available
             if (character.Team == Team.Player)
             {
-                _movesPanel.OpenPanel();
+                
             }
 
             // If it's the enemy's turn, change to log panel
             else
             {
-                _logPanel.OpenPanel();
+                
             }
         }
     }

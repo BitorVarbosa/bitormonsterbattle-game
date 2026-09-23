@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace BitorTools
+namespace BitorTools.UI
 {
     [RequireComponent(typeof(Button))]
     public abstract class ImageButtonUI<T> : MonoBehaviour, IPointerEnterHandler, ISelectHandler

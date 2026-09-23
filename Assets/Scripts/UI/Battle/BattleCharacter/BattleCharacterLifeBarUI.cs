@@ -1,5 +1,5 @@
 using UnityEngine;
-using BitorTools;
+using BitorTools.UI;
 using BitorMonsterBattle.Core;
 using System;
 
